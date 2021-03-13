@@ -18,8 +18,8 @@ class TrafficSignalingProblem:
         self._demand = demand
 
     @classmethod
-    def from_file(cls, input_file):
-        tsp_loader = TrafficSignalingProblemLoader(input_file=input_file)
+    def from_file(cls, input_file_path):
+        tsp_loader = TrafficSignalingProblemLoader(input_file_path=input_file_path)
         return cls(
             simulation_duration=tsp_loader.get_simulation_duration(),
             streetplan=tsp_loader.get_streetplan(),

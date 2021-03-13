@@ -5,6 +5,7 @@ from traffic_signaling.problem.traffic_signaling_problem_loader import (
     TrafficSignalingProblemLoader,
 )
 from traffic_signaling.problem.street_plan import StreetPlan
+from traffic_signaling.problem.car_path import CarPath
 
 
 @pytest.fixture
@@ -15,6 +16,11 @@ def tsp_loader():
 @pytest.fixture
 def streetplan(tsp_loader):
     return tsp_loader.get_streetplan()
+
+
+@pytest.fixture
+def demand(tsp_loader):
+    return tsp_loader.get_demand()
 
 
 def test_initialize_tsp_loader(tsp_loader):
@@ -28,8 +34,8 @@ def test_get_simulation_duration(tsp_loader):
 def test_get_streetplan(streetplan):
     assert isinstance(streetplan, StreetPlan)
 
-    assert len(set(streetplan.intersections)) == 8000
-    assert len(set(streetplan.streets)) == 63968
+    assert len(streetplan.intersections) == 8000
+    assert len(streetplan.streets) == 63968
 
 
 def test_streetplan_intersections(streetplan):
@@ -46,3 +52,8 @@ def test_streetplan_traverse_times(streetplan):
         and street.traverse_time > timedelta(0)
         for street in streetplan.streets
     )
+
+
+def test_get_demand(demand):
+    assert all(isinstance(car_path, CarPath) for car_path in demand)
+    assert len(demand) == 1000

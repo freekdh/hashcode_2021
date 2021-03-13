@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from traffic_signaling.problem.street_plan import StreetPlan, Intersection, Street
+from traffic_signaling.problem.car_path import CarPath
 
 
 class TrafficSignalingProblemLoader:
@@ -48,4 +49,14 @@ class TrafficSignalingProblemLoader:
         return streets
 
     def get_demand(self):
-        raise NotImplementedError
+        with open(self._input_file_path, "r") as data_file:
+            first_row = data_file.readline().strip().split(sep=" ")
+            n_streets, n_cars = int(first_row[2]), int(first_row[3])
+
+        demand = []
+        with open(self._input_file_path, "r") as data_file:
+            for row in list(data_file)[n_streets + 1 : n_streets + n_cars + 1]:
+                car_path = CarPath(streets_sequence=None)
+                demand.append(car_path)
+
+        return demand
