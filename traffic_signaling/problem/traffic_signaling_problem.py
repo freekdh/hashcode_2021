@@ -29,3 +29,19 @@ class TrafficSignalingProblem:
             streetplan=tsp_loader.get_streetplan(),
             demand=tsp_loader.get_demand(),
         )
+
+    @property
+    def demand(self):
+        return self._demand
+    
+    @property
+    def streetplan(self):
+        return self._streetplan
+    
+    @property
+    def carload_delivery_bonus_points(self):
+        return self._carload_delivery_bonus_points
+    
+    @property
+    def simulation_duration(self):
+        return self._simulation_duration
