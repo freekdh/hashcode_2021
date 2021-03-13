@@ -64,3 +64,8 @@ class TrafficSignalingProblemLoader:
                 demand.append(car_path)
 
         return demand
+
+    def get_carload_delivery_bonus_points(self):
+        with open(self._input_file_path, "r") as data_file:
+            first_row = data_file.readline().strip()
+            return int(first_row.split(sep=" ")[4])

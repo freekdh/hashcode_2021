@@ -4,6 +4,7 @@ import pytest
 from traffic_signaling.problem.traffic_signaling_problem_loader import (
     TrafficSignalingProblemLoader,
 )
+from traffic_signaling.problem.traffic_signaling_problem import TrafficSignalingProblem
 from traffic_signaling.problem.street_plan import StreetPlan
 from traffic_signaling.problem.car_path import CarPath
 
@@ -61,3 +62,8 @@ def test_get_demand(demand):
     assert [street.street_name for street in demand[0].streets_sequence][:3] == ["fifd-bebc", "bebc-gf", "gf-baah"]
     assert [street.street_name for street in demand[-1].streets_sequence][:3] == ["ddhg-bjh", "bjh-de", "de-ddgc"]
 
+def test_tsp():
+    assert TrafficSignalingProblem.from_file(input_file_path="./data/hashcode.in")
+
+def test_get_carload_delivery_bonus_points(tsp_loader):
+    assert tsp_loader.get_carload_delivery_bonus_points() == 1000
