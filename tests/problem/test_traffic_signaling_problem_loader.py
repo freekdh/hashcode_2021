@@ -57,3 +57,7 @@ def test_streetplan_traverse_times(streetplan):
 def test_get_demand(demand):
     assert all(isinstance(car_path, CarPath) for car_path in demand)
     assert len(demand) == 1000
+    assert demand[0].get_n_streets() == 120
+    assert [street.street_name for street in demand[0].streets_sequence][:3] == ["fifd-bebc", "bebc-gf", "gf-baah"]
+    assert [street.street_name for street in demand[-1].streets_sequence][:3] == ["ddhg-bjh", "bjh-de", "de-ddgc"]
+

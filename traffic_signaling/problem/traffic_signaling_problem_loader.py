@@ -24,12 +24,13 @@ class TrafficSignalingProblemLoader:
         return StreetPlan(intersections=intersections, streets=streets)
 
     def _get_intersections(self, n_intersections):
-        return (
+        return {
             Intersection(intersection_id=intersection_id)
             for intersection_id in range(n_intersections)
-        )
+        }
 
     def _get_streets(self, n_streets, intersections):
+        insersection_id_to_intersection = {intersection.intersection_id: intersection for intersection in intersections}
         streets = []
         with open(self._input_file_path, "r") as data_file:
             for row in list(data_file)[1 : n_streets + 1]:
@@ -40,8 +41,8 @@ class TrafficSignalingProblemLoader:
                     traverse_time,
                 ) = row.strip().split(sep=" ")
                 street = Street(
-                    intersection1=Intersection(intersection_id=int(intersection1)),
-                    intersection2=Intersection(intersection_id=int(intersection2)),
+                    intersection1=insersection_id_to_intersection[int(intersection1)],
+                    intersection2=insersection_id_to_intersection[int(intersection2)],
                     street_name=street_name,
                     traverse_time=timedelta(seconds=int(traverse_time)),
                 )
@@ -53,10 +54,13 @@ class TrafficSignalingProblemLoader:
             first_row = data_file.readline().strip().split(sep=" ")
             n_streets, n_cars = int(first_row[2]), int(first_row[3])
 
+        streetplan = self.get_streetplan()
+        street_name_to_street = {street.street_name: street for street in streetplan.streets}
         demand = []
         with open(self._input_file_path, "r") as data_file:
             for row in list(data_file)[n_streets + 1 : n_streets + n_cars + 1]:
-                car_path = CarPath(streets_sequence=None)
+                street_names_in_path = [street_name_to_street[street_name] for street_name in row.strip().split(sep=" ")[1:]]
+                car_path = CarPath(streets_sequence=street_names_in_path)
                 demand.append(car_path)
 
         return demand
